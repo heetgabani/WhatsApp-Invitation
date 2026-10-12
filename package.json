@@ -1,0 +1,25 @@
+{
+  "name": "whatsapp-invitation-sender",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local WhatsApp Invitation Sender - Node.js & React Desktop Application",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"SERVER,CLIENT\" -c \"cyan.bold,green.bold\" \"npm run dev --workspace=server\" \"npm run dev --workspace=client\"",
+    "build:client": "npm run build --workspace=client",
+    "build:server": "npm run build --workspace=server",
+    "build": "npm run build:client && npm run build:server",
+    "start": "node server/dist/server.js",
+    "test": "npm run test --workspace=server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "regenerator-runtime": "^0.14.1"
+  }
+}

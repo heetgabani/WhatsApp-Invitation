@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+
+# Local databases & logs
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+logs/*.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor directories
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+
+# Local app data: database, WhatsApp login session, generated invitations (never commit)
+data/database.sqlite
+data/whatsapp-session/
+data/wwebjs-cache/
+.wwebjs_auth/
+.wwebjs_cache/
+output/generated-pdfs/
+
+# Personal data: never publish guest lists, uploads, backups or app data
+/contact.csv
+*.csv
+!server/tests/**/*.csv
+data/
+assets/**
+!assets/invitations/
+!assets/fonts/
+!assets/**/.gitkeep
+output/
+logs/
