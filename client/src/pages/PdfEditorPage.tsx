@@ -137,6 +137,18 @@ export const PdfEditorPage: React.FC<PdfEditorPageProps> = ({
     loadPresets();
   }, [templatePdfPath, fontPath]);
 
+  // One-click font choices: fonts placed in assets/fonts plus Windows' Nirmala UI
+  const [fontOptions, setFontOptions] = useState<{ name: string; fullPath: string }[]>([]);
+  useEffect(() => {
+    Promise.all([api.getAssetFiles().catch(() => null), api.getSettings().catch(() => null)]).then(([assets, settings]) => {
+      const options = (assets?.fonts || [])
+        .filter((f: { name: string }) => /\.(ttf|otf)$/i.test(f.name))
+        .map((f: { name: string; fullPath: string }) => ({ name: f.name.replace(/\.(ttf|otf)$/i, ''), fullPath: f.fullPath }));
+      const systemFont = settings?.settings.system_font_path;
+      setFontOptions(systemFont ? [{ name: 'Nirmala UI (Windows)', fullPath: systemFont }, ...options] : options);
+    });
+  }, []);
+
   // Generate test sample PDF
   const handleGenerateSample = async () => {
     setIsGenerating(true);
@@ -289,6 +301,7 @@ export const PdfEditorPage: React.FC<PdfEditorPageProps> = ({
                 : 'Defaults to Windows Nirmala UI (English, Gujarati, Hindi). Upload your own .ttf/.otf to change it.'
             }
             uploadType="font"
+            assetOptions={fontOptions}
           />
         </div>
 
@@ -303,6 +316,7 @@ export const PdfEditorPage: React.FC<PdfEditorPageProps> = ({
               filterDescription="Font Files"
               uploadType="font"
               helpText="Used instead of the main font for names written in Gujarati."
+              assetOptions={fontOptions}
             />
             <PathPicker
               label="Hindi Font (optional)"
@@ -312,6 +326,7 @@ export const PdfEditorPage: React.FC<PdfEditorPageProps> = ({
               filterDescription="Font Files"
               uploadType="font"
               helpText="Used instead of the main font for names written in Devanagari (Hindi)."
+              assetOptions={fontOptions}
             />
           </div>
         </details>
